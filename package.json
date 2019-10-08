@@ -4,7 +4,8 @@
   "description": "This a toy-like project using Vue.js and Koa.js to learn web develop",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "git-g": "git log --graph --oneline --decorate"
   },
   "repository": {
     "type": "git",
