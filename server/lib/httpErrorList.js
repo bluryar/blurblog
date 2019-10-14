@@ -1,8 +1,9 @@
 /**
+ * @deprecated
  * http状态码类，主要用于获取4xx（客户端错误）状态码对应的类。
  * @module httpErrorList
  */
-
+// TODO - FIX 每个类的code、errCode需要重新描述
 /**
  * 默认错误类，同时也是其余http错误类的父类，可以用于检测错误是否为http错误
  * @extends {Error}
@@ -119,11 +120,11 @@ class UnprocessableEntiey extends HttpError {
 }
 /**
  * HTTP状态码类工厂
- * @param {Number} status http状态码
+ * @param {Number} statusCode http状态码
  * @returns {(BadRequest|AuthFailed|Forbidden|NotFound|MethodNotAllowed|UnsupportedMediaType|UnprocessableEntiey)} HTTP状态码类
  */
-function httpErrCodeFactory (status) {
-  switch (status) {
+function httpErrCodeFactory (statusCode) {
+  switch (statusCode) {
     case 400:
       return BadRequest
     case 401:
