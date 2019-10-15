@@ -17,6 +17,11 @@ module.exports = async (ctx, next) => {
   } catch (error) {
     if (error instanceof HttpError) {
       // 说明该错误是已经描述了的http 4xx 错误
+
+      // 除了404之外，都应该返回错误
+      if (error.code !== HttpError.HTTP_CODE.NotFound) {
+        ctx.log.HTTP_ERROR.warn(error)
+      }
       ctx.response.status = error.code
       ctx.body = {
         msg: error.msg,
@@ -31,7 +36,7 @@ module.exports = async (ctx, next) => {
       }
 
       /**
-       * @TODO 日志处理、业务逻辑错误
+       * @TODO 业务逻辑错误
        */
     }
     // 如果是非生产环境，就将错误栈输出
