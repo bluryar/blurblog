@@ -15,27 +15,26 @@ module.exports = async (ctx, next) => {
   try {
     await next()
   } catch (error) {
-    if (process.env.NODE_ENV === 'prod') {
-      if (error instanceof HttpError) {
-        // 说明该错误是已经描述了的http 4xx 错误
-        ctx.response.status = error.code
-        ctx.body = {
-          msg: error.msg,
-          custom_code: error.customErrorCode
-        }
-      } else {
-        // 未知错误
-        ctx.response.status = HttpError.HTTP_CODE.InternalServerError
-        ctx.body = {
-          msg: HttpError.HTTP_MSG[HttpError.HTTP_CODE.InternalServerError],
-          custom_code: 1008
-        }
+    if (error instanceof HttpError) {
+      // 说明该错误是已经描述了的http 4xx 错误
+      ctx.response.status = error.code
+      ctx.body = {
+        msg: error.msg,
+        custom_code: error.customErrorCode
       }
-    } else { // 开发、测试等环境下之间返回堆栈信息
-      ctx.throw(error.code, error.msg, {
-        custom_code: error.customErrorCode,
-        stack: error.stack
-      })
+    } else {
+      // 未知错误,设置为500
+      ctx.response.status = HttpError.HTTP_CODE.InternalServerError
+      ctx.body = {
+        msg: HttpError.HTTP_MSG[HttpError.HTTP_CODE.InternalServerError],
+        custom_code: 1008
+      }
+
+      /**
+       * @TODO 日志处理、业务逻辑错误
+       */
     }
+    // 如果是非生产环境，就将错误栈输出
+    if (process.env.NODE_ENV !== 'prod') ctx.body.stack = error.stack
   }
 }
