@@ -2,7 +2,7 @@
 const {
   expect
 } = require('chai')
-const reverseObject = require('../lib/util/reverse-object')
+const reverseObject = require('../../../lib/util/reverse-object')
 
 describe('reverseObject', () => {
   it('reverseObject', () => {
