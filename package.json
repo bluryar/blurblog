@@ -29,5 +29,7 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "dependencies": {}
+  "dependencies": {
+    "require-directory": "^2.1.1"
+  }
 }
