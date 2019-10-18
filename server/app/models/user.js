@@ -24,7 +24,9 @@ const UserSchema = new mongoose.Schema({
   // id, mongodb自动创建并设置索引
   nickname: {
     type: String,
-    required: true
+    required: true,
+    unique: true,
+    index: true
   },
   email: {
     type: String,
