@@ -5,20 +5,7 @@
 
 const reverseObject = require('./util/reverse-object')
 const CustomError = require('./custom-error')
-/**
- * @class
- * @namespace
- * @property {object} HTTP_MSG HTTP_CODE的逆键值对对象
- * @property {object} HTTP_CODE
- * @property {number} HTTP_CODE.BadRequest - 400
- * @property {number} HTTP_CODE.AuthFailed - 401
- * @property {number} HTTP_CODE.Forbidden - 403
- * @property {number} HTTP_CODE.NotFound - 404
- * @property {number} HTTP_CODE.MethodNotAllowed - 405
- * @property {number} HTTP_CODE.UnsupportedMediaType - 415
- * @property {number} HTTP_CODE.UnprocessableEntiey - 422
- * @property {number} HTTP_CODE.InternalServerError - 500
- */
+
 class HttpError extends Error {
   /**
    * @param {String} msg http状态信息
