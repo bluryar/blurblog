@@ -12,12 +12,12 @@ class HttpError extends Error {
    * @param {Number} code http状态码
    * @param {Object} payload 自定义信息对象
    */
-  constructor (code = 400, msg = HttpError.HTTP_MSG[400], customErrorCode = 0) {
+  constructor (code = 400, msg, customErrorCode = 0) {
     if (typeof code !== 'number') throw new TypeError('传入的http状态码应是number类型')
     if (customErrorCode && typeof customErrorCode !== 'number') throw new TypeError('传入的自定义错误码应是number类型')
     if (typeof code === 'number' && Object.values(HttpError.HTTP_CODE).indexOf(code) === -1) throw new Error('传入的http状态码尚未定义')
     super(msg)
-    this.msg = msg
+    this.msg = msg || HttpError.HTTP_MSG[code]
     this.code = code
     this.customErrorCode = CustomError.CUSTOM_ERROR_CODE[this.msg]
   }
