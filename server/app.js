@@ -3,6 +3,7 @@
 const httpErrorCatcher = require('./app/middleware/httpErrorCatcher') // 引入全局http异常处理中间件
 const httpLogger = require('./app/middleware/httpLogger') // http日志便捷中间件
 const rootRouter = require('./app/routes/index')
+const validators = require('./app/middleware/validators')
 
 /// 第三方中间件
 const Koa = require('koa')
@@ -21,6 +22,7 @@ app
   .use(httpLogger()) // 为ctx添加logger
   .use(httpErrorCatcher) // 全局异常处理
   .use(bodypaser()) // 参数解析
+  .use(validators) // 校验器类簇对象
   .use(rootRouter.routes()) // 添加路由
   .use(rootRouter.allowedMethods())
 
