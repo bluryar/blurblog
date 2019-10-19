@@ -24,7 +24,8 @@ CustomError.CUSTOM_ERROR_CODE = {
   MethodNotAllowed: 1005,
   UnsupportedMediaType: 1006,
   UnprocessableEntiey: 1007,
-  InternalServerError: 1008
+  InternalServerError: 1008,
+  ValidateAdminParamsFail: 1101
 }
 /**
  * CUSTOM_ERROR_CODE的逆操作，讲其键名作为msg
