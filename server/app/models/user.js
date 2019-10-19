@@ -39,6 +39,9 @@ const UserSchema = new mongoose.Schema({
   },
   deleted_at: {
     type: Date
+  },
+  ip: {
+    type: [String]
   }
 }, options)
 
