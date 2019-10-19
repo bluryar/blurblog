@@ -20,7 +20,7 @@ module.exports = async (ctx, next) => {
 
       // 除了404之外，都应该返回错误
       if (error.code !== HttpError.HTTP_CODE.NotFound) {
-        ctx.log.HTTP_ERROR.warn(error)
+        ctx.logger.warn(error)
       }
       ctx.response.status = error.code
       ctx.body = {
