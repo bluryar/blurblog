@@ -8,7 +8,13 @@ module.exports = async (ctx, next) => {
   const DB = mongoose.createConnection(url, mongodbConfig.mongoose)
   DB.once('connected', () => global.logger.DATABASE.info(`DB:   ${url}   数据库连接成功`))
 
-  await next()
+  try {
+    await next()
+  } catch (error) {
+    DB.once('disconnected', () => global.logger.DATABASE.info(`DB:  ${mongodbConfig.mongoose.dbName} 断开连接`))
+    DB.close()
+    throw error
+  }
   // 关闭数据库
   DB.close()
   DB.once('disconnected', () => global.logger.DATABASE.info(`DB:  ${mongodbConfig.mongoose.dbName} 断开连接`))
