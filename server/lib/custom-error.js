@@ -29,6 +29,8 @@ CustomError.CUSTOM_ERROR_CODE = {
   ValidateAdminParamsFail: 1101,
   DaoValidatePropFail: 1201,
   AdminHasBeenExits: 1202,
+  RouterMiddleWareLoadDao: 1301,
+  RouterMiddleWareNameFault: 1302,
   MongooseSaveDocumentFile: 2001,
   MongooseFindDocumentFile: 2002,
   MongooseGetModelFail: 2101,
