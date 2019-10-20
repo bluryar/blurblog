@@ -21,6 +21,17 @@ class HttpError extends Error {
     this.code = code
     this.customErrorCode = customErrorCode || CustomError.CUSTOM_ERROR_CODE[this.msg] || 9999
   }
+
+  /**
+   * 将一个异常合并入500异常中
+   * @param {Error} error 一个待被合入500异常中的实例，这个方法的效果仅仅在开发环境下显示
+   */
+  nestAnErrorTo500 (error) {
+    if (!(error instanceof Error)) throw new TypeError('应该传入一个异常')
+    if (this.code !== 500) throw new RangeError('调用者必须是500异常')
+    this.nest_error = error
+    return this
+  }
 }
 /**
  * 描述应用程序会可以处理的http错误，如果不在其中就会报错
