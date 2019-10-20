@@ -42,6 +42,9 @@ module.exports = async (ctx, next) => {
        */
     }
     // 如果是非生产环境，就将错误栈输出
-    if (process.env.NODE_ENV !== 'prod') ctx.body.stack = error.stack
+    if (process.env.NODE_ENV !== 'prod') {
+      ctx.body.stack = error.stack
+      if (error.nest_error) ctx.body.nest_error = error.nest_error
+    }
   }
 }
