@@ -17,23 +17,3 @@ const rootRouter = new KoaRouter()
 })()
 
 module.exports = rootRouter
-
-// (function () {
-//   const routerArr = []
-//   requireDir(module, '../routes', {
-//     visit (router) {
-//       routerArr.push(router)
-//     },
-//     exclude: /^index.js$/
-//   })
-//   return {
-//     async DBConnect (ctx, next) {
-//       if (routerArr[ctx.path.split('?')[0]])rootRouter.use(DBConnection)
-//       await next()
-//     },
-//     router () {
-//       const root = rootRouter.use(...routerArr)
-//       return root
-//     }
-//   }
-// })()
