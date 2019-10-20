@@ -4,11 +4,11 @@ const adminRouter = new KoaRouter({
   prefix: '/user/admin'
 })
 
-adminRouter.use(async (ctx, next) => {
-  // 传入数据库连接实例，获取 AdminDao静态类,将这个静态类挂载到ctx下
-  ctx.AdminDao = require('../../../lib/dao/user/AdminDao')(ctx.db)
-  await next()
-})
+// adminRouter.use(async (ctx, next) => {
+//   // 传入数据库连接实例，获取 AdminDao静态类,将这个静态类挂载到ctx下
+//   ctx.AdminDao = require('../../../lib/dao/user/AdminDao')(ctx.db)
+//   await next()
+// })
 
 adminRouter.post('/register', async (ctx) => {
   if (!ctx.is('application/json')) throw new global.HttpError(global.HttpError.UnsupportedMediaType)
