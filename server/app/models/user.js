@@ -6,7 +6,7 @@ const options = {
   strictQuery: true,
   useNestedStrict: true,
   // 时间戳
-  timestamp: {
+  timestamps: {
     createdAt: 'created_at',
     updatedAt: 'updated_at'
   }
@@ -45,4 +45,14 @@ const UserSchema = new mongoose.Schema({
   }
 }, options)
 
-module.exports = mongoose.model('Users', UserSchema)
+// 要实现一个http请求对应一次数据库连接，那么创建模型的时候，不能使用mongoose.model
+module.exports =
+  /**
+   * 获取AdminUser模型
+   * @param {NativeConnection} dbc 由Mongoose.createConnections生成
+   * @returns {Model} Users
+   */
+  function getUsersModel (dbc) {
+    if (dbc === undefined) throw new global.HttpError(500, '获取数据库模型失败', 2101)
+    return dbc.model('Users', UserSchema)
+  }
