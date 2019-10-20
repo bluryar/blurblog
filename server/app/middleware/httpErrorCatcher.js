@@ -25,14 +25,16 @@ module.exports = async (ctx, next) => {
       ctx.response.status = error.code
       ctx.body = {
         msg: error.msg,
-        custom_code: error.customErrorCode
+        custom_code: error.customErrorCode,
+        payload: { request_body: ctx.request.body, request_method: ctx.method, request_url: ctx.URL.pathname }
       }
     } else {
       // 未知错误,设置为500
       ctx.response.status = HttpError.HTTP_CODE.InternalServerError
       ctx.body = {
         msg: HttpError.HTTP_MSG[HttpError.HTTP_CODE.InternalServerError],
-        custom_code: 1008
+        custom_code: 1008,
+        payload: { request_body: ctx.request.body, request_method: ctx.method, request_url: ctx.URL.pathname }
       }
 
       /**
