@@ -17,8 +17,8 @@ module.exports = {
       dbName: 'blurblog@DEV',
       poolSize: 5, // mongodb默认为5
       promiseLibrary: Promise, // Promise库设置为ES6的Promise
-      bufferCommands: false, // 要求mongoose 不缓存命令
-      bufferMaxEntries: 0,
+      // bufferCommands: false,
+      // bufferMaxEntries: 0,
       useCreateIndex: true, // use createIndex() instead of ensureIndex()
       useNewUrlParser: true, // 使用新的解析器必须在连接字符串中指定端口
       useUnifiedTopology: true,
