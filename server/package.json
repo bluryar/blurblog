@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=dev node app",
     "build": "cross-env NODE_ENV=prod node app",
-    "test": "node ./node_modules/mocha/bin/mocha"
+    "test": "cross-env NODE_ENV=dev node ./node_modules/mocha/bin/mocha",
+    "test2":"cross-env NODE_ENV=dev node test"
   },
   "keywords": [
     "koa"
