@@ -19,7 +19,7 @@ class HttpError extends Error {
     super(msg)
     this.msg = msg || HttpError.HTTP_MSG[code]
     this.code = code
-    this.customErrorCode = CustomError.CUSTOM_ERROR_CODE[this.msg]
+    this.customErrorCode = customErrorCode || CustomError.CUSTOM_ERROR_CODE[this.msg] || 9999
   }
 }
 /**
