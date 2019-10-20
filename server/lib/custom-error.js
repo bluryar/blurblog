@@ -17,6 +17,7 @@ class CustomError extends Error {
  * 1xxx为http错误码的别名
  */
 CustomError.CUSTOM_ERROR_CODE = {
+  NotAnError: 0, // 0表示没有错误
   BadRequest: 1001,
   AuthFailed: 1002,
   Forbidden: 1003,
@@ -25,7 +26,13 @@ CustomError.CUSTOM_ERROR_CODE = {
   UnsupportedMediaType: 1006,
   UnprocessableEntiey: 1007,
   InternalServerError: 1008,
-  ValidateAdminParamsFail: 1101
+  ValidateAdminParamsFail: 1101,
+  DaoValidatePropFail: 1201,
+  AdminHasBeenExits: 1202,
+  MongooseSaveDocumentFile: 2001,
+  MongooseFindDocumentFile: 2002,
+  MongooseGetModelFail: 2101,
+  MongooseGetDaoFail: 2201
 }
 /**
  * CUSTOM_ERROR_CODE的逆操作，讲其键名作为msg
