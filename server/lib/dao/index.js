@@ -9,7 +9,10 @@ requireDir(module, '../dao', {
   visit (getXxxDao) {
     arr.push(getXxxDao)
   },
-  exclude: /^index.js$/
+  exclude (path) {
+    console.log(`lib/dao/index.js: auto loading file: ${path.match(/\^\w+\.js$/)}`)
+    return /\^\w+\.js$/.test(path) ? 1 : 0
+  }
 })
 
 module.exports = arr

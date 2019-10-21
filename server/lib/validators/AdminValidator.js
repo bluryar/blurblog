@@ -1,4 +1,4 @@
-const WebValidator = require('./MixinValidator')(false)
+const WebValidator = require('./^MixinValidator')(false)
 
 module.exports = class AdminValidator extends WebValidator {
   constructor (requestPayload) {

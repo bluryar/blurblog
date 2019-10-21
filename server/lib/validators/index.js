@@ -4,5 +4,8 @@ requireDir(module, '../validators', {
   visit (validator) {
     exports[validator.name] = validator
   },
-  exclude: /^(index.js)|(MixinValidator.js)$/
+  exclude (path) {
+    console.log(`/lib/validators/index.js: auto loading file: ${path.match(/\^\w+\.js$/)}`)
+    return /\^\w+\.js$/.test(path) ? 1 : 0
+  }
 })
