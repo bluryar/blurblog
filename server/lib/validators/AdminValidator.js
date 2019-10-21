@@ -8,9 +8,9 @@ module.exports = class AdminValidator extends WebValidator {
 
   checkPayload (api = 'register') {
     if (api !== 'register' && api !== 'login') throw new global.HttpError(500, '参数只能为register、login中的一个', 1101)
-    let result = this.checkEmail() && this.checkNickname()
+    let result = this.checkEmail() /** @bugfix 登录并不校验nickname */
     if (api === 'register') {
-      result = result && this.checkRegisterPassword()
+      result = result && this.checkRegisterPassword() && this.checkNickname()
     } else {
       result = result && this.checkLoginPassword()
     }
