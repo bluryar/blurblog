@@ -10,7 +10,9 @@ requireDir(module, '../dao', {
     arr.push(getXxxDao)
   },
   exclude (path) {
-    console.log(`lib/dao/index.js: auto loading file: ${path.match(/\^\w+\.js$/)}`)
+    if (path.match(/\^\w+\.js$/)) {
+      console.log(`lib/dao/index.js: auto-loading module ignore this file: ${path.match(/\^\w+\.js$/)}`)
+    } else console.log(`lib/dao/index.js: auto-loading module LOADING this file: ${path.match(/\w+\.js$/)}`)
     return /\^\w+\.js$/.test(path) ? 1 : 0
   }
 })

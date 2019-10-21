@@ -5,7 +5,9 @@ requireDir(module, '../validators', {
     exports[validator.name] = validator
   },
   exclude (path) {
-    console.log(`/lib/validators/index.js: auto loading file: ${path.match(/\^\w+\.js$/)}`)
+    if (path.match(/\^\w+\.js$/)) {
+      console.log(`lib/validators/index.js: auto-loading module ignore this file: ${path.match(/\^\w+\.js$/)}`)
+    } else console.log(`lib/validators/index.js: auto-loading module LOADING this file: ${path.match(/\w+\.js$/)}`)
     return /\^\w+\.js$/.test(path) ? 1 : 0
   }
 })
