@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
 
 const options = {
   // 严格模式
@@ -11,6 +12,12 @@ const options = {
     updatedAt: 'updated_at'
   }
 }
+
+const salt = bcrypt.genSaltSync(10)
+
+/**
+ * @todo  校验，永远不要相信用户输入和参数校验后传入的参数值
+ */
 const UserSchema = new mongoose.Schema({
   isAdmin: {
     type: Boolean,
@@ -34,8 +41,13 @@ const UserSchema = new mongoose.Schema({
     unique: true
   },
   password: {
+    /** @todo 这一项应该传入一个加密后的值 */
     type: String,
-    required: true
+    required: true,
+    set (value) { // 数据库不存放明文密码
+      const hash = bcrypt.hashSync(value, salt)
+      return hash
+    }
   },
   deleted_at: {
     type: Date
