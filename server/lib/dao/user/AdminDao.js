@@ -1,5 +1,7 @@
 const getUsersModel = require('../../../app/models/user')
-const notUndefined = require('../../util/each-prop-not-undefined') // 工具函数，判断某个对象的所有属性不为undefined
+const hasntUndefined = require('../../util/each-prop-not-undefined') // 工具函数，判断某个对象的所有属性不为undefined
+
+const bcrypt = require('bcrypt')
 
 module.exports =
   /**
@@ -18,7 +20,8 @@ module.exports =
      * @param {Object} data 通过校验的ctx.request.body
      */
       static async createAdmin (data) {
-        if (!notUndefined(data)) throw new global.HttpError(400, '部分参数为空', 1201)
+        if (data === undefined) throw new global.HttpError(400, '请求参数对象为空', 1201)
+        if (!hasntUndefined(data)) throw new global.HttpError(400, '请求参数对象的部分参数为空', 1201)
 
         // 判断文档是否存在
         let isExists
@@ -52,6 +55,37 @@ module.exports =
         }
         global.logger.DATABASE.info(`${admin} 插入数据成功`)
         return result
+      }
+
+      /**
+       * 检测传入的http请求参数中的密码字段是否存在于数据库当中，且密码是否匹配相应email对应的用户
+       * @param {HttpRequestData} data http请求参数对象
+       * @returns {Boolean} （布尔）密码输入正确
+       */
+      static async checkPassword (data) {
+        if (data === undefined) throw new global.HttpError(400, '请求参数对象为空', 1201)
+        if (!hasntUndefined(data)) throw new global.HttpError(400, '请求参数对象的部分参数为空', 1201)
+
+        let doc
+        try {
+          doc = await Admin.findOne({
+            isAdmin: true,
+            email: data.email,
+            deleted_at: {
+              $exists: false
+            }
+          })
+        } catch (error) {
+          const newErr = new global.HttpError(500, '查找文档失败', 2002)
+          throw newErr.nestAnErrorTo500(error)
+        }
+
+        if (!doc) throw new global.HttpError(422, '用户不存在', 1203)
+
+        // 用户存在，校验密码
+        if (!bcrypt.compareSync(data.password, doc.password)) throw new global.HttpError(403, '密码输入错误', 1204)
+
+        return true
       }
     }
   }
