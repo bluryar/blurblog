@@ -30,6 +30,14 @@ module.exports = function () {
         keepFileExt: true,
         alwaysIncludePattern: true
       },
+      customeInfo: {
+        type: 'dateFile',
+        filename: `${path.join(global.config.baseDIR, 'log', '/custome-info')}`,
+        pattern: '.yyyy-MM-dd.log',
+        daysToKeep: 15,
+        keepFileExt: true,
+        alwaysIncludePattern: true
+      },
       stdout: {
         type: 'stdout'
       }
@@ -49,6 +57,10 @@ module.exports = function () {
       },
       DATABASE: {
         appenders: ['stdout', 'database'],
+        level: 'info'
+      },
+      CUSTOM_INFO: {
+        appenders: ['stdout', 'customeInfo'],
         level: 'info'
       }
     }

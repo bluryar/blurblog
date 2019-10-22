@@ -31,7 +31,8 @@ const loadLoggerToGlobal = async () => {
     HTTP_ERROR: log4js.getLogger('HTTP_ERROR'),
     CUSTOM_ERROR: log4js.getLogger('CUSTOM_ERROR'),
     DATABASE: log4js.getLogger('DATABASE'),
-    default: log4js.getLogger('default')
+    default: log4js.getLogger('default'),
+    CUSTOM_INFO: log4js.getLogger('CUSTOM_INFO')
   }
 }
 
