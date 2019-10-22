@@ -2,6 +2,11 @@ module.exports = {
   NODE_ENV: 'dev',
   port: 3000,
   baseDIR: process.cwd(),
+  security: { // jwt密钥与过期时间
+    secretKey: 'bluryar',
+    expiresIn: '1h',
+    issuer: '__blurblog__' // 令牌签发人
+  },
   redis: {
     host: '127.0.0.1',
     port: 6397,

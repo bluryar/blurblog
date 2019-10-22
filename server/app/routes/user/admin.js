@@ -1,5 +1,7 @@
 const KoaRouter = require('koa-router')
 
+const jsonwebtoken = require('jsonwebtoken')
+
 const adminRouter = new KoaRouter({
   prefix: '/user/admin'
 })
@@ -42,10 +44,16 @@ adminRouter.post('/login', async (ctx) => {
     global.logger.CUSTOM_INFO.info(`用户 ${ctx.request.body.email} 登录输入通过Dao查询确定数据库中存在该用户`)
   }
 
+  const { secretKey, expiresIn, issuer } = global.config.security
   // TODO 生成token
-
+  const token = jsonwebtoken.sign({ email: ctx.request.body.email }, secretKey, {
+    expiresIn,
+    issuer
+  })
+  global.logger.CUSTOM_INFO.info(`为用户${ctx.request.body.email}(代理ip:${ctx.ip}) 提供存活时间为一个小时的token${token}`)
   ctx.status = 200
+  ctx.body = { msg: '登陆成功', token }
 })
-adminRouter.post('/auth', async (ctx) => {})
+adminRouter.get('/auth', async (ctx) => {})
 
 module.exports = adminRouter
