@@ -13,6 +13,10 @@ const HttpError = require('../../lib/http-error')
  */
 module.exports = async (ctx, next) => {
   try {
+    // 捕获某些没能正确捕获的异常
+    process.on('uncaughtException', (err) => {
+      throw err
+    })
     await next()
   } catch (error) {
     if (error instanceof HttpError) {
@@ -26,7 +30,11 @@ module.exports = async (ctx, next) => {
       ctx.body = {
         msg: error.msg,
         custom_code: error.customErrorCode,
-        payload: { request_body: ctx.request.body, request_method: ctx.method, request_url: ctx.URL.pathname }
+        payload: {
+          request_body: ctx.request.body,
+          request_method: ctx.method,
+          request_url: ctx.URL.pathname
+        }
       }
     } else {
       // 未知错误,设置为500
@@ -34,7 +42,11 @@ module.exports = async (ctx, next) => {
       ctx.body = {
         msg: HttpError.HTTP_MSG[HttpError.HTTP_CODE.InternalServerError],
         custom_code: 1008,
-        payload: { request_body: ctx.request.body, request_method: ctx.method, request_url: ctx.URL.pathname }
+        payload: {
+          request_body: ctx.request.body,
+          request_method: ctx.method,
+          request_url: ctx.URL.pathname
+        }
       }
 
       /**
