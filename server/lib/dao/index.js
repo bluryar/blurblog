@@ -5,15 +5,17 @@
 const requireDir = require('require-directory')
 // 自动导入导出
 const arr = []
-requireDir(module, '../dao', {
+const regExp = /NAL-\w+.js/
+
+requireDir(module, __dirname, {
   visit (getXxxDao) {
     arr.push(getXxxDao)
   },
   exclude (path) {
-    if (path.match(/\^\w+\.js$/)) {
-      console.log(`lib/dao/index.js: auto-loading module ignore this file: ${path.match(/\^\w+\.js$/)}`)
+    if (path.match(regExp)) {
+      console.log(`lib/dao/index.js: auto-loading module ignore this file: ${path.match(regExp)}`)
     } else console.log(`lib/dao/index.js: auto-loading module LOADING this file: ${path.match(/\w+\.js$/)}`)
-    return /\^\w+\.js$/.test(path) ? 1 : 0
+    return regExp.test(path) ? 1 : 0
   }
 })
 

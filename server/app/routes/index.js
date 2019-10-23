@@ -1,9 +1,10 @@
 const KoaRouter = require('koa-router')
 const requireDir = require('require-directory')
-const DBConnection = require('./^dbConnection')
-const loadDao = require('./^loadDao.js')
+const DBConnection = require('./NAL-dbConnection')
+const loadDao = require('./NAL-loadDao.js')
 const rootRouter = new KoaRouter()
 
+const regExp = /NAL-\w+.js/
 ;
 (function () {
   const routerArr = []
@@ -12,10 +13,10 @@ const rootRouter = new KoaRouter()
       routerArr.push(router.routes())
     },
     exclude (path) {
-      if (path.match(/\^\w+\.js$/)) {
-        console.log(`app/routes/index.js: auto-loading module ignore this file: ${path.match(/\^\w+\.js$/)}`)
+      if (path.match(regExp)) {
+        console.log(`app/routes/index.js: auto-loading module ignore this file: ${path.match(regExp)}`)
       } else console.log(`app/routes/index.js: auto-loading module LOADING this file: ${path.match(/\w+\.js$/)}`)
-      return /\^\w+\.js$/.test(path) ? 1 : 0
+      return regExp.test(path) ? 1 : 0
     }
   })
   rootRouter
