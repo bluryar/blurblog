@@ -4,8 +4,7 @@
   "description": "blurblog的后端程序",
   "main": "app.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=dev node app",
-    "build": "cross-env NODE_ENV=prod node app",
+    "dev": "nodemon app",
     "test": "cross-env NODE_ENV=dev node ./node_modules/mocha/bin/mocha",
     "test2": "cross-env NODE_ENV=dev node test"
   },
@@ -42,6 +41,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "mocha": "^6.2.1",
+    "nodemon": "^1.19.4",
     "standard": "^14.3.1",
     "supertest": "^4.0.2"
   }
