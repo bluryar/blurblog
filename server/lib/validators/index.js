@@ -8,8 +8,8 @@ requireDir(module, __dirname, {
   },
   exclude (path) {
     if (path.match(regExp)) {
-      console.log(`lib/validators/index.js: auto-loading module ignore this file: ${path.match(regExp)}`)
-    } else console.log(`lib/validators/index.js: auto-loading module LOADING this file: ${path.match(/\w+\.js$/)}`)
+      global.logger.default.info(`lib/validators/index.js: auto-loading module ignore this file: ${path.match(regExp)}`)
+    } else global.logger.default.info(`lib/validators/index.js: auto-loading module LOADING this file: ${path.match(/\w+\.js$/)}`)
     return regExp.test(path) ? 1 : 0
   }
 })

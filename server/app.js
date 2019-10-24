@@ -1,3 +1,5 @@
+// 设置全局变量 config\logger\HttpError
+require('./lib/AppManager')().load() // 获取管理者单例
 
 /// 自定义中间件
 const httpErrorCatcher = require('./app/middleware/httpErrorCatcher') // 引入全局http异常处理中间件
@@ -13,9 +15,6 @@ const bodypaser = require('koa-bodyparser')
 // Koa实例
 const app = new Koa()
 // AppManager实例
-const am = require('./lib/AppManager')(app) // 获取管理者单例
-
-am.load() // 设置全局变量 config\logger\HttpError
 
 app
   .use(cors()) // 处理跨域问题
