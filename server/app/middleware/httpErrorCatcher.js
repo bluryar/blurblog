@@ -1,4 +1,5 @@
 const HttpError = require('../../lib/http-error')
+const CustomError = require('../../lib/custom-error')
 /**
  * @todo 1、添加日志？
  * @todo 2、处理业务逻辑错误
@@ -29,30 +30,31 @@ module.exports = async (ctx, next) => {
       ctx.response.status = error.code
       ctx.body = {
         msg: error.msg,
-        custom_code: error.customErrorCode,
-        payload: {
-          request_body: ctx.request.body,
-          request_method: ctx.method,
-          request_url: ctx.URL.pathname
-        }
+        custom_code: error.customErrorCode
+      }
+    } else if (parseInt(error.status) === 401) {
+      ctx.response.status = parseInt(error.status)
+      ctx.body = {
+        msg: error.msg,
+        custom_code: CustomError.CUSTOM_ERROR_CODE.AuthFailed
       }
     } else {
       // 未知错误,设置为500
       ctx.response.status = HttpError.HTTP_CODE.InternalServerError
       ctx.body = {
         msg: HttpError.HTTP_MSG[HttpError.HTTP_CODE.InternalServerError],
-        custom_code: 1008,
-        payload: {
-          request_body: ctx.request.body,
-          request_method: ctx.method,
-          request_url: ctx.URL.pathname
-        }
-      }
+        custom_code: CustomError.CUSTOM_ERROR_CODE.InternalServerError
 
-      /**
-       * @TODO 业务逻辑错误
-       */
+      }
     }
+
+    // 响应信息荷载
+    ctx.body.payload = {
+      request_body: ctx.request.body,
+      request_method: ctx.method,
+      request_url: ctx.URL.pathname
+    }
+
     // 如果是非生产环境，就将错误栈输出
     if (process.env.NODE_ENV !== 'prod') {
       ctx.body.stack = error.stack

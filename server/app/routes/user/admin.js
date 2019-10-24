@@ -41,7 +41,7 @@ adminRouter.post('/login', async (ctx) => {
   } else ctx.throw(500) // 如果该语句触发说明程序发生了严重且隐蔽的异常
 
   if (await ctx.AdminDao.checkPassword(ctx.request.body) === true) {
-    global.logger.CUSTOM_INFO.info(`用户 ${ctx.request.body.email} 登录输入通过Dao查询确定数据库中存在该用户`)
+    global.logger.CUSTOM_INFO.warn(`用户 ${ctx.request.body.email} 登录输入通过Dao查询确定数据库中存在该用户`)
   }
 
   const { secretKey, expiresIn, issuer } = global.config.security
@@ -50,10 +50,12 @@ adminRouter.post('/login', async (ctx) => {
     expiresIn,
     issuer
   })
-  global.logger.CUSTOM_INFO.info(`为用户${ctx.request.body.email}(代理ip:${ctx.ip}) 提供存活时间为一个小时的token${token}`)
+  global.logger.CUSTOM_INFO.warn(`为用户${ctx.request.body.email}(代理ip:${ctx.ip}) 提供存活时间为一个小时的token${token}`)
   ctx.status = 200
   ctx.body = { msg: '登陆成功', token }
 })
-adminRouter.get('/auth', async (ctx) => {})
+adminRouter.get('/auth', async (ctx) => {
+  ctx.body = 'Auth OK'
+})
 
 module.exports = adminRouter

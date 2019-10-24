@@ -7,6 +7,7 @@ module.exports = async (ctx, next) => {
   // 要实现一个http请求对应一次数据库连接，那么创建模型的时候，不能使用mongoose.model
   const db = mongoose.createConnection(url, mongodbConfig.mongoose)
   ctx.db = db
+  global.logger.DATABASE.info(`DB:  ${mongodbConfig.mongoose.dbName}连接数据库`)
   try {
     await next()
   } catch (error) {

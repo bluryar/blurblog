@@ -4,10 +4,12 @@ const DBConnection = require('./NAL-dbConnection')
 const loadDao = require('./NAL-loadDao.js')
 const rootRouter = new KoaRouter()
 
-// const koaJwt = require('koa-jwt')
-
-const regExp = /NAL-\w+.js/
-;
+const koaJwt = require('koa-jwt')
+const {
+  secretKey: secret,
+  issuer
+} = global.config.security
+const regExp = /NAL-\w+.js/;
 (function () {
   const routerArr = []
   requireDir(module, __dirname, {
@@ -21,8 +23,12 @@ const regExp = /NAL-\w+.js/
       return regExp.test(path) ? 1 : 0
     }
   })
-  rootRouter
-    // .use(koaJwt({}).unless()
+  rootRouter.use(koaJwt({
+    secret,
+    issuer
+  }).unless({
+    path: [/\/login/, /\/register/] // 不需要鉴权的路由
+  }))
     .use(DBConnection)
     .use(loadDao)
     .use(...routerArr)

@@ -10,7 +10,7 @@ const validators = require('./app/middleware/validators')
 /// 第三方中间件
 const Koa = require('koa')
 const cors = require('@koa/cors')
-const bodypaser = require('koa-bodyparser')
+const bodyparser = require('koa-bodyparser')
 
 // Koa实例
 const app = new Koa()
@@ -20,7 +20,7 @@ app
   .use(cors()) // 处理跨域问题
   .use(httpLogger()) // 为ctx添加logger
   .use(httpErrorCatcher) // 全局异常处理
-  .use(bodypaser()) // 参数解析
+  .use(bodyparser()) // 参数解析
   .use(validators) // 校验器类簇对象
   .use(rootRouter.routes()) // 添加路由
   .use(rootRouter.allowedMethods())
