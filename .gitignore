@@ -63,3 +63,5 @@ typings/
 test.js
 .vscode
 server/.vscode
+
+jsconfig.json
