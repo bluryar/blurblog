@@ -1,4 +1,5 @@
 /* eslint-disable */
+require('../../lib/AppManager')().load()
 const {
   expect
 } = require('chai')
