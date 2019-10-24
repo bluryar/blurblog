@@ -10,6 +10,8 @@ const ctx = {}
 const am = AppManager()
 am.load()
 
+const app = require('../../../app')
+
 describe('AdminDao', async () => {
   it('#CreateAdmin', async () => {
     let result
@@ -52,7 +54,7 @@ describe('AdminDao', async () => {
         result = await AdminDao.checkPassword({
           "email": "exampl1e2@163.com",
           "password": "12345678"
-      })
+        })
 
         console.log(result)
         // DB.connection.close()
@@ -63,5 +65,32 @@ describe('AdminDao', async () => {
     } catch (error) {
       expect(error.msg).to.be.equal('用户不存在')
     }
+  });
+
+  it('findAdminByEmail AdminNotExists', async () => {
+    try {
+      await dbConnect(ctx, async () => {
+        const AdminDao = getAdminDao(ctx.db)
+        result = await AdminDao.findAdminByEmail("exampl1e22@163.com")
+
+        console.log(result)
+        // DB.connection.close()
+      })
+      expect(result).undefined
+      expect(result).null
+    } catch (error) {
+      expect(error.code).to.be.equal(500)
+    }
+  });
+  it('findAdminByEmail Admin Exists', async () => {
+    await dbConnect(ctx, async () => {
+      const AdminDao = getAdminDao(ctx.db)
+      result = await AdminDao.findAdminByEmail("exampl1e2@163.com")
+
+      console.log(result)
+      // DB.connection.close()
+    })
+    expect(result).not.undefined
+    expect(result).not.null
   });
 })
