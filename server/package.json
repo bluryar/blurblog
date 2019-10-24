@@ -4,7 +4,9 @@
   "description": "blurblog的后端程序",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon app",
+    "test": "cross-env NODE_ENV=dev node ./node_modules/mocha/bin/mocha",
+    "test2": "cross-env NODE_ENV=dev node test"
   },
   "keywords": [
     "koa"
@@ -12,6 +14,9 @@
   "author": "bluryar",
   "license": "MPL-2.0",
   "dependencies": {
+    "@koa/cors": "^2.2.3",
+    "bcrypt": "^3.0.6",
+    "js": "^0.1.0",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.8.2",
     "koa-bodyparser": "^4.2.1",
@@ -19,12 +24,16 @@
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "koa-views": "^6.2.1",
+    "lodash": "^4.17.15",
     "log4js": "^5.2.0",
     "mongoose": "^5.7.3",
-    "redis": "^2.8.0"
+    "redis": "^2.8.0",
+    "require-directory": "^2.1.1",
+    "validator": "^11.1.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "cross-env": "^6.0.3",
     "eslint": "^6.5.1",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.18.2",
@@ -32,6 +41,8 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "mocha": "^6.2.1",
-    "standard": "^14.3.1"
+    "nodemon": "^1.19.4",
+    "standard": "^14.3.1",
+    "supertest": "^4.0.2"
   }
 }

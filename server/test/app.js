@@ -1,11 +1,11 @@
 // 设置全局变量 config\logger\HttpError
-require('./lib/AppManager')().load() // 获取管理者单例
+require('../lib/AppManager')().load() // 获取管理者单例
 
 /// 自定义中间件
-const httpErrorCatcher = require('./app/middleware/httpErrorCatcher') // 引入全局http异常处理中间件
-const httpLogger = require('./app/middleware/httpLogger') // http日志便捷中间件
-const rootRouter = require('./app/routes/index')
-const validators = require('./app/middleware/validators')
+const httpErrorCatcher = require('../app/middleware/httpErrorCatcher') // 引入全局http异常处理中间件
+const httpLogger = require('../app/middleware/httpLogger') // http日志便捷中间件
+const rootRouter = require('../app/routes/index')
+const validators = require('../app/middleware/validators')
 
 /// 第三方中间件
 const Koa = require('koa')
@@ -24,6 +24,4 @@ app
   .use(rootRouter.routes()) // 添加路由
   .use(rootRouter.allowedMethods())
 
-app.listen(global.config.port, () => {
-  console.log(`Your application is running at http://localhost:${global.config.port}`)
-})
+module.exports = app

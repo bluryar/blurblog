@@ -1,0 +1,18 @@
+{
+  "restartable": "rs",
+  "verbose": true,
+  "ext": "js,json",
+  "watch": [
+    "./app.js",
+    "./app/*",
+    "./package.json",
+    "./lib",
+    "./config",
+    "./nodemon.json"
+  ],
+  "env": {
+    "NODE_ENV": "dev"
+  },
+  "legacy-watch": false,
+  "delay": 2500
+}
