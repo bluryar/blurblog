@@ -44,18 +44,41 @@ adminRouter.post('/login', async (ctx) => {
     global.logger.CUSTOM_INFO.warn(`用户 ${ctx.request.body.email} 登录输入通过Dao查询确定数据库中存在该用户`)
   }
 
-  const { secretKey, expiresIn, issuer } = global.config.security
+  const {
+    secretKey,
+    expiresIn,
+    issuer
+  } = global.config.security
   // TODO 生成token
-  const token = jsonwebtoken.sign({ email: ctx.request.body.email }, secretKey, {
+  const token = jsonwebtoken.sign({
+    email: ctx.request.body.email
+  }, secretKey, {
     expiresIn,
     issuer
   })
   global.logger.CUSTOM_INFO.warn(`为用户${ctx.request.body.email}(代理ip:${ctx.ip}) 提供存活时间为一个小时的token${token}`)
   ctx.status = 200
-  ctx.body = { msg: '登陆成功', token }
+  ctx.body = {
+    msg: '登陆成功',
+    token
+  }
 })
 adminRouter.get('/auth', async (ctx) => {
-  ctx.body = 'Auth OK'
+  // 访问该接口需要鉴权，如果这个异步函数被执行，说明鉴权成功
+  const {
+    email
+  } = ctx.state.user
+  const admin = await ctx.AdminDao.findAdminByEmail(email)
+  ctx.status = 200
+  ctx.body = {
+    msg: 'success',
+    custom_code: 0,
+    data: {
+      id: admin.id,
+      nickname: admin.nickname,
+      email: admin.email
+    }
+  }
 })
 
 module.exports = adminRouter

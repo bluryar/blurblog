@@ -2,6 +2,7 @@ const getUsersModel = require('../../../app/models/user')
 const hasntUndefined = require('../../util/each-prop-not-undefined') // 工具函数，判断某个对象的所有属性不为undefined
 
 const bcrypt = require('bcrypt')
+const validator = require('validator')
 
 module.exports =
   /**
@@ -16,9 +17,9 @@ module.exports =
     const Admin = getUsersModel(dbc)
 
     return class AdminDao {
-    /**
-     * @param {Object} data 通过校验的ctx.request.body
-     */
+      /**
+       * @param {Object} data 通过校验的ctx.request.body
+       */
       static async createAdmin (data) {
         if (data === undefined) throw new global.HttpError(400, '请求参数对象为空', 1201)
         if (!hasntUndefined(data)) throw new global.HttpError(400, '请求参数对象的部分参数为空', 1201)
@@ -86,6 +87,25 @@ module.exports =
         if (!bcrypt.compareSync(data.password, doc.password)) throw new global.HttpError(403, '密码输入错误', 1204)
 
         return true
+      }
+
+      static async findAdminByEmail (email) {
+        if (!validator.isEmail(email)) throw new Error('需要传入一个email')
+        let doc
+        try {
+          doc = await Admin.findOne({
+            email,
+            isAdmin: true,
+            deleted_at: {
+              $exists: false
+            }
+          })
+        } catch (error) {
+          const newErr = new global.HttpError(500, '查找文档失败', 2002)
+          throw newErr.nestAnErrorTo500(error)
+        }
+        if (!doc) throw new global.HttpError(500, '管理员不存在', 1203)
+        return doc
       }
     }
   }
