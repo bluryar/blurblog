@@ -2,7 +2,7 @@ const KoaRouter = require('koa-router')
 
 const jsonwebtoken = require('jsonwebtoken')
 
-const jsJson = require('../NAL-isJson')
+const jsJson = require('../Middlewares/NAL-isJson')
 
 const adminRouter = new KoaRouter({
   prefix: '/user/admin'

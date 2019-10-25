@@ -1,7 +1,7 @@
 const KoaRouter = require('koa-router')
 
 const categoryRouter = new KoaRouter()
-const isJson = require('./NAL-isJson')
+const isJson = require('./Middlewares/NAL-isJson')
 
 /** 创建分类 */
 categoryRouter.post('/category', isJson)

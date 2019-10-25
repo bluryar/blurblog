@@ -2,7 +2,7 @@ const KoaRouter = require('koa-router')
 
 const commentRouter = new KoaRouter()
 
-const isJson = require('./NAL-isJson')
+const isJson = require('./Middlewares/NAL-isJson')
 
 /** 创建评论 */
 commentRouter.post('/comment', isJson)

@@ -2,7 +2,7 @@ const KoaRouter = require('koa-router')
 
 const articleRouter = new KoaRouter()
 
-const isJson = require('./NAL-isJson')
+const isJson = require('./Middlewares/NAL-isJson')
 
 /**
  * 创建文章

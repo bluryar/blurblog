@@ -1,7 +1,7 @@
 const KoaRouter = require('koa-router')
 const requireDir = require('require-directory')
-const DBConnection = require('./NAL-dbConnection')
-const loadDao = require('./NAL-loadDao.js')
+const DBConnection = require('./Middlewares/NAL-dbConnection')
+const loadDao = require('./Middlewares/NAL-loadDao.js')
 const rootRouter = new KoaRouter()
 
 const koaJwt = require('koa-jwt')
