@@ -18,10 +18,14 @@ module.exports = (function () {
   class WebValidator extends MixinValidator {
     constructor (payload) {
       super()
-      this.payload = payload
+      if (_.isObject(payload)) {
+        this.payload = payload
+      } else {
+        throw new TypeError('payload需是一个对象')
+      }
     }
   }
-  class MongoooseValidator extends MixinValidator {
+  class MongooseValidator extends MixinValidator {
     constructor (payload) {
       super()
       this.payload = payload
@@ -29,7 +33,7 @@ module.exports = (function () {
   }
   return function (isMongoose) {
     if (isMongoose === undefined) throw new TypeError('isMongoose 是必填布尔值(typeof Boolean)')
-    if (isMongoose) return MongoooseValidator
+    if (isMongoose) return MongooseValidator
     else return WebValidator
   }
 })()
