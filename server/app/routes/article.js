@@ -2,10 +2,12 @@ const KoaRouter = require('koa-router')
 
 const articleRouter = new KoaRouter()
 
+const isJson = require('./NAL-isJson')
+
 /**
  * 创建文章
  */
-articleRouter.post('/article', async (ctx) => {
+articleRouter.post('/article', isJson, async (ctx) => {
   // 获取参数校验器
   const validator = new ctx.validators.ArticleValidator(ctx.request.body)
   if (validator.checkPayload()) {
@@ -44,7 +46,7 @@ articleRouter.delete('/article/:id', async (ctx) => {
 /**
  * 修改某一篇文章
  */
-articleRouter.put('/article/:id', async (ctx) => {
+articleRouter.put('/article/:id', isJson, async (ctx) => {
   // 校验参数--id
   const validator = new ctx.validators.ArticleValidator(ctx.request.body)
   if (validator.checkCtxParamsId(ctx.params.id)) global.logger.CUSTOM_INFO.info(`路由参数 ${ctx.params.id} 校验成功`)
@@ -67,7 +69,7 @@ articleRouter.put('/article/:id', async (ctx) => {
 /**
  * 获取文章列表
  */
-articleRouter.get('/article')
+articleRouter.get('/article', isJson)
 
 /**
  * 获取某一篇文章的详情
@@ -77,6 +79,6 @@ articleRouter.get('/article/:id')
 /**
  *搜索文章
  */
-articleRouter.get('/search/article')
+articleRouter.get('/search/article', isJson)
 
 module.exports = articleRouter

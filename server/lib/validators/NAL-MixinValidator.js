@@ -18,11 +18,7 @@ module.exports = (function () {
   class WebValidator extends MixinValidator {
     constructor (payload) {
       super()
-      if (_.isObject(payload)) {
-        this.payload = payload
-      } else {
-        throw new TypeError('payload需是一个对象')
-      }
+      this.payload = payload
     }
   }
   class MongooseValidator extends MixinValidator {
