@@ -68,4 +68,17 @@ describe('ArticleValidator', () => {
     }
 
   })
+
+  it('checkCtxParamsId', () => {
+    const validator = new ArticleValidator()
+    expect(validator.checkCtxParamsId('5db2cb7c8af4564a8c150c2b')).to.be.true
+  });
+  it('#checkPutPayLoad', () => {
+    const validator = new ArticleValidator({
+      author: "123",
+      content: "123",
+      cover: "123",
+    })
+    expect(validator.checkPutPayload()).to.be.true
+  });
 })
