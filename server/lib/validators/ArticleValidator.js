@@ -26,41 +26,46 @@ module.exports = class ArticleValidator extends WebValidator {
       this._checkContent() && this._checkCover() && this._checkCategory()
   }
 
-  _checkTitle () {
-    if (!this._.isString(this.requestPayload.title)) throw new HttpError(422, '参数类型错误', 1201)
-    if (!this.StringValidator.isLength(this.requestPayload.title, {
+  _checkTitle (_title) {
+    const title = _title === undefined ? this.getStringValueByKey('title') : _title
+    if (!this._.isString(title)) throw new HttpError(422, '参数类型错误', 1201)
+    if (!this.StringValidator.isLength(title, {
       min: 3,
       max: 20
     })) throw new HttpError(422, '标题长度范围为3-20个字符', 1201)
     return true
   }
 
-  _checkAuthor () {
-    if (!this._.isString(this.requestPayload.author)) throw new HttpError(422, '参数类型错误', 1201)
-    if (!this.StringValidator.isLength(this.requestPayload.author, {
+  _checkAuthor (_author) {
+    const author = _author === undefined ? this.getStringValueByKey('author') : _author
+    if (!this._.isString(author)) throw new HttpError(422, '参数类型错误', 1201)
+    if (!this.StringValidator.isLength(author, {
       min: 3,
       max: 10
     })) throw new HttpError(422, '昵称长度范围为3-20个字符', 1201)
     return true
   }
 
-  _checkContent () {
-    if (!this._.isString(this.requestPayload.content)) throw new HttpError(422, '参数类型错误', 1201)
-    if (!this.StringValidator.isLength(this.requestPayload.content, {
+  _checkContent (_content) {
+    const content = _content === undefined ? this.getStringValueByKey('content') : _content
+    if (!this._.isString(content)) throw new HttpError(422, '参数类型错误', 1201)
+    if (!this.StringValidator.isLength(content, {
       min: 1,
       max: 20000
     })) throw new HttpError(422, '内容长度范围为1-20000个字符', 1201)
     return true
   }
 
-  _checkCover () {
+  _checkCover (_cover) {
+    const cover = _cover === undefined ? this.getStringValueByKey('cover') : _cover
     // 假设Cover是图片连接
-    if (!this._.isString(this.requestPayload.cover)) throw new HttpError(422, '参数类型错误', 1201)
+    if (!this._.isString(cover)) throw new HttpError(422, '参数类型错误', 1201)
     return true
   }
 
-  _checkCategory () {
-    if (!this.StringValidator.isMongoId(this.requestPayload.category_id)) throw new HttpError(422, '参数分类 类型错误', 1201)
+  _checkCategory (_category) {
+    const category = _category === undefined ? this.getStringValueByKey('category_id') : _category
+    if (!this.StringValidator.isMongoId(category)) throw new HttpError(422, '参数分类 类型错误', 1201)
     return true
   }
 }
