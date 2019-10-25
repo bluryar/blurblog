@@ -14,6 +14,10 @@ module.exports =
     const HttpError = global.HttpError
 
     return class ArticleDao {
+      /**
+       * 创建文章
+       * @param {Object} data 数据对象
+       */
       static async createArticle (data) {
         const { title, author, content, cover, category_id: categoryId } = data
         let doc
@@ -42,6 +46,73 @@ module.exports =
         } catch (error) {
           throw (new HttpError(500, '数据库查找失败')).nestAnErrorTo500(error)
         }
+      }
+
+      /**
+       * 查找并删除文章（若文章尚未被删除）
+       * @param {String | ObjectId} id mongodb的id
+       */
+      static async findAndDeleteById (id) {
+        if (id === undefined) throw new Error('参数id不存在')
+        // 通过了路由参数校验就说明id是MongoId，所以此处不重复校验
+
+        let doc // 查找文档是否存在，并且没有被删除
+        try {
+          doc = await Article.findOne({
+            _id: id,
+            delete_at: {
+              $exists: false
+            }
+          })
+        } catch (error) {
+          throw (new HttpError(500, '数据库查找失败')).nestAnErrorTo500(error)
+        }
+        if (doc === null) throw new HttpError(400, '不存在这样的文档（id错误）', 1203)
+
+        let result // 删除
+        try {
+          result = await Article.deleteOne({ _id: id })
+          if (result.deletedCount < 1) throw new HttpError(500, '数据库删除文档失败')
+        } catch (error) {
+          throw (new HttpError(500, '数据库删除文档失败')).nestAnErrorTo500(error)
+        }
+        global.logger.DATABASE.warn(`删除文档 ${doc.title}!!`)
+        return result
+      }
+
+      /**
+       * 更新文章
+       * @param {Object} data 荷载对象
+       * @param {String | ObjectId} id mongodb的id
+       */
+      static async updateArticleById (data, id) {
+        if (!data || !id) throw new Error('参数不能为空')
+        // 查找未删除文档
+        let doc
+        try {
+          doc = await Article.findOne({
+            _id: id,
+            delete_at: {
+              $exists: false
+            }
+          })
+        } catch (error) {
+          throw (new HttpError(500, '数据库查找失败')).nestAnErrorTo500(error)
+        }
+
+        if (doc === null) throw new HttpError(400, '不存在这样的文档（id错误）', 1203)
+        // 更新文档
+        let result
+        try {
+          result = await Article.updateOne({
+            _id: id
+          }, data)
+        } catch (error) {
+          throw (new HttpError(500, '数据库查找失败')).nestAnErrorTo500(error)
+        }
+        if (result.nModified === 1)global.logger.DATABASE.warn(`更新文档 ${doc.title} 成功!!`)
+        else throw new HttpError(500, '更新失败')
+        return result
       }
     }
   }

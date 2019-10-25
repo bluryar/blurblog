@@ -68,4 +68,34 @@ module.exports = class ArticleValidator extends WebValidator {
     if (!this.StringValidator.isMongoId(category)) throw new HttpError(422, '参数分类 类型错误', 1201)
     return true
   }
+
+  checkCtxParamsId (_id) {
+    const id = _id === undefined ? this.requestPayload.id : _id
+    if (!this._.isString(id)) throw new HttpError(400, '路由参数类型错误', 1201)
+    if (!this.StringValidator.isMongoId(id)) throw new HttpError(400, '路由参数错误', 1201)
+    return true
+  }
+
+  checkPutPayload () {
+    if (this._.isEmpty(this.requestPayload)) throw new HttpError(400, '没有上传参数', 1201)
+    if (this.requestPayload.id) throw new HttpError(422, '荷载参数不应包含id参数，请将id作为路径参数', 1201)
+    // 状态模式，缓存对象
+    const fn = {
+      title: this._checkTitle,
+      author: this._checkAuthor,
+      cover: this._checkCover,
+      content: this._checkContent,
+      category_id: this._checkCategory
+    }
+    let result = true
+    let isEmptyObject = true
+    this._.forEach(this.requestPayload, (value, key) => {
+      if (value === undefined) return
+      if (this.StringValidator.isEmpty(value)) throw new HttpError(422, `${key}参数不能为空字符`, 1201)
+      result = result && fn[key].call(this, value)
+      isEmptyObject = false
+    })
+    if (isEmptyObject) throw new HttpError(400, '参数不能为空', 1201)
+    return result
+  }
 }
