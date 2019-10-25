@@ -26,7 +26,7 @@ CustomError.CUSTOM_ERROR_CODE = {
   UnsupportedMediaType: 1006,
   UnprocessableEntiey: 1007,
   InternalServerError: 1008,
-  ValidateAdminParamsFail: 1101,
+  ValidateParamsFail: 1101,
   DaoValidatePropFail: 1201,
   AdminHasBeenExists: 1202,
   AdminNotExists: 1203,
