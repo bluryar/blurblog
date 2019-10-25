@@ -2,11 +2,13 @@ const KoaRouter = require('koa-router')
 
 const jsonwebtoken = require('jsonwebtoken')
 
+const jsJson = require('../NAL-isJson')
+
 const adminRouter = new KoaRouter({
   prefix: '/user/admin'
 })
 
-adminRouter.post('/register', async (ctx) => {
+adminRouter.post('/register', jsJson, async (ctx) => {
   if (!ctx.is('application/json')) throw new global.HttpError(global.HttpError.UnsupportedMediaType)
 
   // 生成校验器
@@ -29,7 +31,7 @@ adminRouter.post('/register', async (ctx) => {
 
   global.logger.CUSTOM_INFO.info(`用户 ${ctx.request.body.email} 注册成功`)
 })
-adminRouter.post('/login', async (ctx) => {
+adminRouter.post('/login', jsJson, async (ctx) => {
   if (!ctx.is('application/json')) throw new global.HttpError(global.HttpError.UnsupportedMediaType)
 
   // 生成校验器
