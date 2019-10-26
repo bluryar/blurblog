@@ -71,8 +71,8 @@ module.exports =
 
         let result // 删除
         try {
-          result = await Article.deleteOne({ _id: id })
-          if (result.deletedCount < 1) throw new HttpError(500, '数据库删除文档失败')
+          result = await Article.updateOne({ _id: id }, { delete_at: new Date() })
+          if (result.nModified < 1) throw new HttpError(500, '数据库删除文档失败')
         } catch (error) {
           throw (new HttpError(500, '数据库删除文档失败')).nestAnErrorTo500(error)
         }
