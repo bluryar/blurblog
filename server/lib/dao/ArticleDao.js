@@ -32,7 +32,7 @@ module.exports =
           doc = await Article.findOne({
             title,
             author,
-            delete_at: {
+            deleted_at: {
               $exists: false
             }
           })
@@ -70,7 +70,7 @@ module.exports =
         try {
           doc = await Article.findOne({
             _id: id,
-            delete_at: {
+            deleted_at: {
               $exists: false
             }
           })
@@ -84,7 +84,7 @@ module.exports =
           result = await Article.updateOne({
             _id: id
           }, {
-            delete_at: new Date(),
+            deleted_at: new Date(),
             $inc: {
               __v: 1
             }
@@ -109,7 +109,7 @@ module.exports =
         try {
           doc = await Article.findOne({
             _id: id,
-            delete_at: {
+            deleted_at: {
               $exists: false
             }
           })
@@ -148,7 +148,7 @@ module.exports =
         try {
           doc = await Article.findOne({
             _id: id,
-            delete_at: {
+            deleted_at: {
               $exists: false
             }
           })
@@ -159,5 +159,49 @@ module.exports =
         global.logger.DATABASE.warn(`查询文档 ${doc.title}!!`)
         return doc._doc
       }
+
+      /**
+       * 根据page查询对应page&desc下的10篇文章
+       * @param {Object} params 查询参数
+       * @returns {Array} 文章列表数组
+       */
+      // static async findPageDescArticle (params) {
+      //   if (!params) throw new Error('参数不能为空')
+      //   params.page = parseInt(params.page) - 1 // 当前页减去1，用于skip
+      //   const docNum = 10 // 返回/跳过 10条文档
+      //   const filter = {
+      //     ...{
+      //       category_id: params.category_id
+
+      //     }
+      //   }
+      //   let docs
+      //   try {
+      //     docs = (params.category_id === undefined)
+      //       ? await Article.find({
+      //         deleted_at: {
+      //           $exists: false
+      //         }
+      //       }, null, {
+      //         $skip: (params.page * docNum),
+      //         $sort: {
+      //           create_at: -1
+      //         }
+      //       })
+      //       : await Article.find({
+      //         deleted_at: {
+      //           $exists: false
+      //         },
+      //         category_id: params.category_id
+      //       }, null, {
+      //         $skip: (params.page * docNum),
+      //         $sort: {
+      //           created_at: -1
+      //         }
+      //       })
+      //   } catch (error) {
+      //     throw (new HttpError(500, '数据库查找失败')).nestAnErrorTo500(error)
+      //   }
+      // }
     }
   }

@@ -48,7 +48,7 @@ const ArticleSchema = mongoose.Schema({
     require: true,
     default: 0
   },
-  delete_at: {
+  deleted_at: {
     type: Date
   }
 }, options)
