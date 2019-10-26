@@ -24,8 +24,8 @@ const ArticleSchema = mongoose.Schema({
   author: {
     type: String,
     require: true,
-    default: 'blurblog',
-    unique: true
+    default: 'blurblog'
+    /** @fix 作者不应该为唯一索引 */
   },
   // 文章内容
   content: {
