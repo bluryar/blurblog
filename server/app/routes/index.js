@@ -30,8 +30,10 @@ const regExp = /NAL-\w+.js/;
     path: [/\/login/, /\/register/], // 匹配/user/admin接口不需要鉴权的路由
     custom (ctx) { // 匹配除了/user/admin接口外不需要鉴权的路由
       if (/get/i.test(ctx.method)) {
-        const pathReg = /\/article\/\w{24}/i
-        if (pathReg.test(ctx.path)) return true
+        const getAnArticle = /\/article\/\w{24}/i
+        if (getAnArticle.test(ctx.path)) return true
+        const getPageArticle = /\/article$/
+        if (getPageArticle.test(ctx.path)) return true
       }
       return false
     }

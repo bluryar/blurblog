@@ -165,43 +165,25 @@ module.exports =
        * @param {Object} params 查询参数
        * @returns {Array} 文章列表数组
        */
-      // static async findPageDescArticle (params) {
-      //   if (!params) throw new Error('参数不能为空')
-      //   params.page = parseInt(params.page) - 1 // 当前页减去1，用于skip
-      //   const docNum = 10 // 返回/跳过 10条文档
-      //   const filter = {
-      //     ...{
-      //       category_id: params.category_id
+      static async findPageDescArticle (params) {
+        if (!params) throw new Error('参数不能为空')
 
-      //     }
-      //   }
-      //   let docs
-      //   try {
-      //     docs = (params.category_id === undefined)
-      //       ? await Article.find({
-      //         deleted_at: {
-      //           $exists: false
-      //         }
-      //       }, null, {
-      //         $skip: (params.page * docNum),
-      //         $sort: {
-      //           create_at: -1
-      //         }
-      //       })
-      //       : await Article.find({
-      //         deleted_at: {
-      //           $exists: false
-      //         },
-      //         category_id: params.category_id
-      //       }, null, {
-      //         $skip: (params.page * docNum),
-      //         $sort: {
-      //           created_at: -1
-      //         }
-      //       })
-      //   } catch (error) {
-      //     throw (new HttpError(500, '数据库查找失败')).nestAnErrorTo500(error)
-      //   }
-      // }
+        // 策略模式单例对象
+        const FindStrategy = require('./NAL-ParamsStrategy')(params)
+
+        let result
+        try {
+          result = await FindStrategy.findByModel(Article)
+        } catch (error) {
+          throw (new HttpError(500, '数据库查找失败')).nestAnErrorTo500(error)
+        }
+        /** 不处理结果 有controller处理
+         * result:{
+         *  data:[],
+         *  meta:{}
+         * }
+         */
+        return result
+      }
     }
   }
