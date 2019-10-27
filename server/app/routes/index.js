@@ -34,6 +34,10 @@ const regExp = /NAL-\w+.js/;
         if (getAnArticle.test(ctx.path)) return true
         const getPageArticle = /\/article$/
         if (getPageArticle.test(ctx.path)) return true
+        const getAnCategory = /\/category\/\w{24}/i
+        if (getAnCategory.test(ctx.path)) return true
+        const getPageCategory = /\/category$/
+        if (getPageCategory.test(ctx.path)) return true
       }
       return false
     }

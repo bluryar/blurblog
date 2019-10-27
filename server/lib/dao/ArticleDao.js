@@ -185,5 +185,18 @@ module.exports =
          */
         return result
       }
+
+      /**
+       * 计算分类下的文档数量
+       * @param {String} categoryId 分类mongoid
+       */
+      static async countArticleByCategoryId (categoryId) {
+        if (!categoryId) throw new Error('categoryId不能为空')
+        const validator = require('validator')
+        if (!validator.isMongoId(categoryId)) throw new HttpError(422, '请传入正确的id')
+        const count = await Article.count({ category_id: categoryId, deleted_at: { $exists: false } })
+
+        return count
+      }
     }
   }

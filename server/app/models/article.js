@@ -40,7 +40,8 @@ const ArticleSchema = mongoose.Schema({
   // 文章分类ID
   category_id: {
     type: mongoose.Schema.Types.ObjectId,
-    require: true
+    require: true,
+    ref: 'Categories'
   },
   // 文章浏览次数
   browse: {
