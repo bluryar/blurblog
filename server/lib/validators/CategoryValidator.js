@@ -51,7 +51,7 @@ module.exports = class CategoryValidator extends WebValidator {
 
   checkParams (_params) {
     if (this._.isUndefined(_params) || this._.isEmpty(_params) || !this._.isString(_params)) throw new HttpError(400, '请传入非空路径参数')
-    if (!this.StringValidator.isMongoId(_params)) throw new HttpError('路径参数许是正式id值')
+    if (!this.StringValidator.isMongoId(_params)) throw new HttpError(400, '路径参数许是正式id值')
     return true
   }
 
