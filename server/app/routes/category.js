@@ -109,6 +109,21 @@ categoryRouter.get('/category/:id', async (ctx) => {
 })
 
 /** 获取一个分类下的文章 */
-categoryRouter.get('/category/:id/article', isJson)
+categoryRouter.get('/category/:id/article', isJson, async (ctx) => {
+  const validator = new ctx.validators.CategoryValidator()
+  if (ctx.request.body.desc !== undefined) validator.checkDesc(ctx.request.body.desc)
+  if (ctx.request.body.page !== undefined) validator.checkPage(ctx.request.body.page)
+  if (validator.checkParams(ctx.params.id)) global.logger.default.info(`${ctx.method} ${ctx.path}: 参数校验成功`)
+
+  const result = await ctx.CategoryDao.findArticleByCategoryId(ctx.params.id, ctx.request.body.page, ctx.request.body.desc)
+
+  ctx.status = 200
+  ctx.body = {
+    code: 200,
+    msg: 'success',
+    custom_code: 0,
+    data: result
+  }
+})
 
 module.exports = categoryRouter

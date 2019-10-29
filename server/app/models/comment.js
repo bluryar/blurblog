@@ -34,7 +34,6 @@ const CommentSchema = mongoose.Schema({
   article_id: {
     type: mongoose.Schema.Types.ObjectId,
     require: true,
-    unique: true,
     ref: 'Articles'
   },
   // 评论父级ID

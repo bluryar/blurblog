@@ -38,6 +38,10 @@ const regExp = /NAL-\w+.js/;
         if (getAnCategory.test(ctx.path)) return true
         const getPageCategory = /\/category$/
         if (getPageCategory.test(ctx.path)) return true
+        const getAnComment = /\/comment\/\w{24}/i
+        if (getAnComment.test(ctx.path)) return true
+        const getPageComment = /\/comment$/
+        if (getPageComment.test(ctx.path)) return true
       }
       return false
     }

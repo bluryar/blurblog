@@ -1,4 +1,5 @@
 const getCategoriesModel = require('../../app/models/category')
+const getArticlesModel = require('../../app/models/article')
 
 module.exports =
   /**
@@ -11,9 +12,13 @@ module.exports =
 
     // Category 模型对象
     const Category = getCategoriesModel(dbc)
+    const Article = getArticlesModel(dbc)
     const HttpError = global.HttpError
     const notExistsFilter = { deleted_at: { $exists: false } }
+    // 工具函数
+    const findFail = (error) => { return (new HttpError(500, '查找文档失败')).nestAnErrorTo500(error) }
     const get500Error = (msg, error) => { return (new HttpError(500, msg)).nestAnErrorTo500(error) }
+    const isUndefined = data => { if (data === undefined) throw new Error('参数为空') }
 
     /** 数据访问静态类 */
     return class CategoryDao {
@@ -131,6 +136,32 @@ module.exports =
         }
 
         return result
+      }
+
+      static async findArticleByCategoryId (id, page = 1, desc = { created_at: true, browse: false }) {
+        isUndefined(id)
+        const _desc = desc.created_at === true ? {
+          created_at: -1
+        } : {
+          browse: -1
+        }
+        try {
+          const result = await Article.find({ ...notExistsFilter, category_id: id }, null,
+            { sort: _desc, limit: 10, skip: (page - 1) * 10 })
+          const all = await Article.find({ ...notExistsFilter })
+          return {
+            data: result,
+            meta: {
+              current_page: page,
+              per_page: 10,
+              count: result.length,
+              total: all.length,
+              total_pages: Math.ceil(all.length / 10)
+            }
+          }
+        } catch (error) {
+          throw findFail(error)
+        }
       }
     }
   }

@@ -90,7 +90,7 @@ module.exports = function (params) {
         }
       })
       const result = await queryPromise
-      const count = await Model.count()
+      const count = (await Model.find({ deleted_at: { $exists: false } })).length
       return {
         data: result,
         // 分页

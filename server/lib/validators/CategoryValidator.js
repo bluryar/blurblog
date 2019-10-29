@@ -62,4 +62,18 @@ module.exports = class CategoryValidator extends WebValidator {
     const parentIdStatus = this._.isUndefined(_payload.parent_id) ? true : this.baseCheck._checkParentId(_payload.parent_id)
     return nameStatus && keyStatus && parentIdStatus
   }
+
+  checkPage (page) {
+    if (this._.isUndefined(page) || !this._.isString(page)) throw new HttpError(400, 'page必须存在且是字符串')
+    if (!this.StringValidator.isInt(page)) throw new HttpError(400, 'page必须是整型字符串形式')
+    return true
+  }
+
+  checkDesc (desc) {
+    if (this._.isUndefined(desc)) throw new HttpError(400, 'desc未指定')
+    if (this._.isPlainObject(desc) && this._.isEmpty(desc)) throw new HttpError(400, 'desc不能为空')
+    if (!this._.isUndefined(desc.created_at) && !this._.isBoolean(desc.created_at)) throw new HttpError(400, 'created_at被指定，但是类型错误')
+    if (!this._.isUndefined(desc.browse) && !this._.isBoolean(desc.browse)) throw new HttpError(400, '按browse排序模式被指定，但是类型错误')
+    return true
+  }
 }

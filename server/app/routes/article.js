@@ -3,6 +3,7 @@ const KoaRouter = require('koa-router')
 const articleRouter = new KoaRouter()
 
 const isJson = require('./Middlewares/NAL-isJson')
+const lodash = require('lodash')
 
 /**
  * 创建文章
@@ -79,10 +80,11 @@ articleRouter.get('/article', isJson, async (ctx) => {
   const articles = await ctx.ArticleDao.findPageDescArticle(afterValidateParams)
   global.logger.CUSTOM_INFO.info('数据查找成功')
 
-  // TODO 完成Dao，取消掉 `{} ||`
-  // const category = {} || await ctx.CategoryDao.findCategoryById(article.category_id)
-  // const comments = {} || await ctx.CommentDao.findCommentsById(article.article_id)
-
+  for (let i = 0; i < articles.data.length; i++) {
+    articles.data[i] = articles.data[i]._doc
+    articles.data[i].category_detail = await ctx.CategoryDao.findCategoryById(articles.data[i].category_id)
+    articles.data[i].comments = await ctx.CommentDao.findCommentsByArticleId(articles.data[i]._id)
+  }
   ctx.status = 200
   ctx.body = {
     msg: 'success',
@@ -90,12 +92,7 @@ articleRouter.get('/article', isJson, async (ctx) => {
     custom_code: 0,
     data: {
       data:
-        articles.data, // category_detail: category, // TODO 获取分类信息
-      // comments_list: { // TODO 获取评论列表
-      //   data: comments.data,
-      //   meta: comments.meta
-      // }
-
+        articles.data,
       meta: articles.meta
     }
   }
@@ -112,23 +109,15 @@ articleRouter.get('/article/:id', async (ctx) => {
   // 查询数据库,取得文章信息、分类信息、评论信息列表（包含评论数组、元信息）
   const article = await ctx.ArticleDao.findOneArticleById(ctx.params.id)
 
-  // TODO 完成Dao，取消掉 `{} ||`
-  const category = {} || await ctx.CategoryDao.findCategoryById(article.category_id)
-  const comments = {} || await ctx.CommentDao.findCommentsById(article.article_id)
+  article.category_detail = await ctx.CategoryDao.findCategoryById(article.category_id)
+  article.comments = await ctx.CommentDao.findCommentsByArticleId(article._id)
 
   ctx.status = 200
   ctx.body = {
     msg: 'success',
     code: 200,
     custom_code: 0,
-    data: {
-      ...article,
-      category_detail: category, // TODO 获取分类信息
-      comments_list: { // TODO 获取评论列表
-        data: comments.data,
-        meta: comments.meta
-      }
-    }
+    data: article
   }
 })
 
@@ -147,9 +136,10 @@ articleRouter.get('/search/article', isJson, async (ctx) => {
   const articles = await ctx.ArticleDao.findPageDescArticle(afterValidateParams)
   global.logger.CUSTOM_INFO.info('数据查找成功')
 
-  // TODO 完成Dao，取消掉 `{} ||`
-  // const category = {} || await ctx.CategoryDao.findCategoryById(article.category_id)
-  // const comments = {} || await ctx.CommentDao.findCommentsById(article.article_id)
+  lodash.forEach(articles.data, async (value, index) => {
+    articles.data[index].category_detail = await ctx.CategoryDao.findCategoryById(value.category_id)
+    articles.data[index].comments = await ctx.CommentDao.findCommentsByArticleId(value._id)
+  })
 
   ctx.status = 200
   ctx.body = {
@@ -158,12 +148,7 @@ articleRouter.get('/search/article', isJson, async (ctx) => {
     custom_code: 0,
     data: {
       data:
-        articles.data, // category_detail: category, // TODO 获取分类信息
-      // comments_list: { // TODO 获取评论列表
-      //   data: comments.data,
-      //   meta: comments.meta
-      // }
-
+        articles.data,
       meta: articles.meta
     }
   }

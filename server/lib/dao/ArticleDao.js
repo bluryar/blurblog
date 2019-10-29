@@ -177,12 +177,6 @@ module.exports =
         } catch (error) {
           throw (new HttpError(500, '数据库查找失败')).nestAnErrorTo500(error)
         }
-        /** 不处理结果 有controller处理
-         * result:{
-         *  data:[],
-         *  meta:{}
-         * }
-         */
         return result
       }
 
