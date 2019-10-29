@@ -42,6 +42,7 @@ HttpError.HTTP_CODE = {
   Forbidden: 403,
   NotFound: 404,
   MethodNotAllowed: 405,
+  UnAcceptable: 406,
   UnsupportedMediaType: 415,
   UnprocessableEntiey: 422,
   InternalServerError: 500

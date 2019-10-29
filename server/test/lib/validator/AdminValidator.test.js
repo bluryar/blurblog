@@ -1,10 +1,10 @@
 /* eslint-disable */
-require('../../lib/AppManager')().load()
+require('../../../lib/AppManager')().load()
 const {
   expect
 } = require('chai')
-const validators = require('../../lib/validators')
-global.HttpError = require('../../lib/http-error')
+const validators = require('../../../lib/validators')
+global.HttpError = require('../../../lib/http-error')
 describe('AdminValidator', () => {
   describe('AdminValidator no params to constructot', () => {
     const admin = new validators.AdminValidator()
@@ -118,7 +118,7 @@ describe('AdminValidator', () => {
   });
   describe('middleware-validators', () => {
     it('AdminValidator', async () => {
-      const valiMiddleware = require('../../app/middleware/validators')
+      const valiMiddleware = require('../../../app/middleware/validators')
       const ctx = {}
       await valiMiddleware(ctx, () => {})
       expect(ctx.validators).not.be.be.undefined

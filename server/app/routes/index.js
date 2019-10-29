@@ -1,7 +1,7 @@
 const KoaRouter = require('koa-router')
 const requireDir = require('require-directory')
-const DBConnection = require('./NAL-dbConnection')
-const loadDao = require('./NAL-loadDao.js')
+const DBConnection = require('./Middlewares/NAL-dbConnection')
+const loadDao = require('./Middlewares/NAL-loadDao.js')
 const rootRouter = new KoaRouter()
 
 const koaJwt = require('koa-jwt')
@@ -27,7 +27,24 @@ const regExp = /NAL-\w+.js/;
     secret,
     issuer
   }).unless({
-    path: [/\/login/, /\/register/] // 不需要鉴权的路由
+    path: [/\/login/, /\/register/], // 匹配/user/admin接口不需要鉴权的路由
+    custom (ctx) { // 匹配除了/user/admin接口外不需要鉴权的路由
+      if (/get/i.test(ctx.method)) {
+        const getAnArticle = /\/article\/\w{24}/i
+        if (getAnArticle.test(ctx.path)) return true
+        const getPageArticle = /\/article$/
+        if (getPageArticle.test(ctx.path)) return true
+        const getAnCategory = /\/category\/\w{24}/i
+        if (getAnCategory.test(ctx.path)) return true
+        const getPageCategory = /\/category$/
+        if (getPageCategory.test(ctx.path)) return true
+        const getAnComment = /\/comment\/\w{24}/i
+        if (getAnComment.test(ctx.path)) return true
+        const getPageComment = /\/comment$/
+        if (getPageComment.test(ctx.path)) return true
+      }
+      return false
+    }
   }))
     .use(DBConnection)
     .use(loadDao)

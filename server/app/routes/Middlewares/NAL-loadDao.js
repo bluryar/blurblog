@@ -1,4 +1,4 @@
-const getXxxDaoArr = require('../../lib/dao') // 引入方法数组
+const getXxxDaoArr = require('../../../lib/dao') // 引入方法数组
 
 module.exports = async (ctx, next) => {
   // ctx.db 要求必须存在

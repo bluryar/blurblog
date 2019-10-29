@@ -65,6 +65,7 @@ module.exports =
    * @returns {Model} Users
    */
   function getUsersModel (dbc) {
+    if (!(dbc instanceof mongoose.Connection)) throw new global.HttpError(500)
     if (dbc === undefined) throw new global.HttpError(500, '获取数据库模型失败', 2101)
     return dbc.model('Users', UserSchema)
   }

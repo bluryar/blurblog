@@ -5,7 +5,7 @@ const {
 const mongoose = require('mongoose')
 const getAdminDao = require('../../../../lib/dao/user/AdminDao')
 const AppManager = require('../../../../lib/AppManager')
-const dbConnect = require('../../../../app/routes/NAL-dbConnection')
+const dbConnect = require('../../../../app/routes/Middlewares/NAL-dbConnection')
 const ctx = {}
 const am = AppManager()
 am.load()

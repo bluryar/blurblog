@@ -21,7 +21,7 @@ module.exports = (function () {
       this.payload = payload
     }
   }
-  class MongoooseValidator extends MixinValidator {
+  class MongooseValidator extends MixinValidator {
     constructor (payload) {
       super()
       this.payload = payload
@@ -29,7 +29,7 @@ module.exports = (function () {
   }
   return function (isMongoose) {
     if (isMongoose === undefined) throw new TypeError('isMongoose 是必填布尔值(typeof Boolean)')
-    if (isMongoose) return MongoooseValidator
+    if (isMongoose) return MongooseValidator
     else return WebValidator
   }
 })()
